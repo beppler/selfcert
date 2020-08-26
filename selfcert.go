@@ -10,6 +10,7 @@ import (
 	"crypto/x509/pkix"
 	"encoding/pem"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"math/big"
 	"os"
@@ -44,7 +45,7 @@ func pemBlockForKey(priv interface{}) *pem.Block {
 }
 
 func main() {
-	// priv, err := rsa.GenerateKey(rand.Reader, *rsaBits)
+	//priv, err := rsa.GenerateKey(rand.Reader, 2048)
 	priv, err := ecdsa.GenerateKey(elliptic.P521(), rand.Reader)
 	if err != nil {
 		log.Fatal(err)
@@ -69,7 +70,9 @@ func main() {
 	out := &bytes.Buffer{}
 	pem.Encode(out, &pem.Block{Type: "CERTIFICATE", Bytes: derBytes})
 	fmt.Println(out.String())
+	ioutil.WriteFile("acme.crt", out.Bytes(), 0640)
 	out.Reset()
 	pem.Encode(out, pemBlockForKey(priv))
 	fmt.Println(out.String())
+	ioutil.WriteFile("acme.key", out.Bytes(), 0640)
 }
