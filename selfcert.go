@@ -46,7 +46,7 @@ func pemBlockForKey(priv interface{}) *pem.Block {
 
 func main() {
 	//priv, err := rsa.GenerateKey(rand.Reader, 2048)
-	priv, err := ecdsa.GenerateKey(elliptic.P521(), rand.Reader)
+	priv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
 		log.Fatal(err)
 	}
